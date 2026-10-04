@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue des produits{% endblock %}
+
+{% block body %}
+
+    <h1>Catalogue des produits</h1>
+
+    {% if produits is empty %}
+        <p>Aucun produit disponible.</p>
+    {% else %}
+        <div>
+            {% for produit in produits %}
+                <div>
+                    <h2>{{ produit.designation }}</h2>
+
+                    <p>{{ produit.description }}</p>
+
+                    <p>Prix : {{ produit.prix }} €</p>
+
+                    <p>Quantité disponible : {{ produit.quantite }}</p>
+
+                    {% if produit.disponible %}
+                        <p>Produit disponible</p>
+                    {% else %}
+                        <p>Réapprovisionnement en cours</p>
+                    {% endif %}
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}
