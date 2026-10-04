@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Valider ma commande{% endblock %}
+
+{% block body %}
+
+    <h1>Valider ma commande</h1>
+
+    <p>Veuillez renseigner vos informations :</p>
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prenom) }}
+        {{ form_row(form.email) }}
+
+        {{ form_row(form.valider) }}
+
+    {{ form_end(form) }}
+
+{% endblock %}

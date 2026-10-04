@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block body %}
+
+    <h1>Mon panier 🛒</h1>
+
+    {% if produits is empty %}
+
+        <p>Votre panier est vide.</p>
+
+        <a href="{{ path('app_produit') }}">
+            Retour au catalogue
+        </a>
+
+    {% else %}
+
+        {% for ligne in produits %}
+
+            <div>
+                <h2>{{ ligne.produit.designation }}</h2>
+
+                <p>
+                    Prix unitaire :
+                    {{ ligne.produit.prix }} €
+                </p>
+
+                <p>
+                    Quantité :
+                </p>
+
+                <a href="{{ path('panier_diminuer', {id: ligne.produit.id}) }}">
+                    −
+                </a>
+
+                {{ ligne.quantite }}
+
+                <a href="{{ path('panier_ajouter', {id: ligne.produit.id}) }}">
+                    +
+                </a>
+
+                <p>
+                    Sous-total :
+                    {{ ligne.sousTotal }} €
+                </p>
+
+                <a href="{{ path('panier_supprimer', {id: ligne.produit.id}) }}">
+                    🗑️ Supprimer
+                </a>
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
+        <h2>Total : {{ total }} €</h2>
+        <br>
+
+        <a href="{{ path('commande_valider') }}">
+          ✅ Valider ma commande
+        </a>
+        <a href="{{ path('app_produit') }}">
+            Continuer mes achats
+        </a>
+
+    {% endif %}
+
+{% endblock %}
