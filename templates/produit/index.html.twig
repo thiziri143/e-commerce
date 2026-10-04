@@ -7,28 +7,52 @@
     <h1>Catalogue des produits</h1>
 
     {% if produits is empty %}
+
         <p>Aucun produit disponible.</p>
+
     {% else %}
-        <div>
-            {% for produit in produits %}
-                <div>
-                    <h2>{{ produit.designation }}</h2>
 
-                    <p>{{ produit.description }}</p>
+        {% for produit in produits %}
 
-                    <p>Prix : {{ produit.prix }} €</p>
+            <div>
+                <h2>{{ produit.designation }}</h2>
 
-                    <p>Quantité disponible : {{ produit.quantite }}</p>
+                <p>{{ produit.description }}</p>
 
-                    {% if produit.disponible %}
-                        <p>Produit disponible</p>
-                    {% else %}
-                        <p>Réapprovisionnement en cours</p>
-                    {% endif %}
-                </div>
-                <hr>
-            {% endfor %}
-        </div>
+                <p>
+                    <strong>Prix :</strong>
+                    {{ produit.prix }} €
+                </p>
+
+                {% if produit.disponible and produit.quantite > 0 %}
+
+                    <p>
+                        <strong>Quantité disponible :</strong>
+                        {{ produit.quantite }}
+                    </p>
+
+                    <p>✅ Produit disponible</p>
+
+                    <a href="{{ path('admin_produit_modifier', {id: produit.id}) }}">
+                        Modifier
+                    </a>
+
+                    <a href="{{ path('admin_produit_supprimer', {id: produit.id}) }}">
+                        Retirer du catalogue
+                    </a>
+
+                {% else %}
+
+                    <p>🔄 Réapprovisionnement en cours</p>
+
+                {% endif %}
+
+            </div>
+
+            <hr>
+
+        {% endfor %}
+
     {% endif %}
 
 {% endblock %}
