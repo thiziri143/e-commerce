@@ -4,63 +4,63 @@
 
 {% block body %}
 
-    <h1>Catalogue des produits</h1>
+<h1>Catalogue des produits</h1>
 
-    {% if produits is empty %}
+{% if produits is empty %}
 
-        <p>Aucun produit disponible.</p>
+    <p>Aucun produit disponible.</p>
 
-    {% else %}
+{% else %}
 
-        {% for produit in produits %}
+    {% for produit in produits %}
 
-            <div>
-                <h2>{{ produit.designation }}</h2>
+        <div>
+            <h2>{{ produit.designation }}</h2>
 
-                <p>{{ produit.description }}</p>
+            <p>{{ produit.description }}</p>
+
+            <p>
+                <strong>Prix :</strong>
+                {{ produit.prix }} €
+            </p>
+
+            {% if produit.disponible and produit.quantite > 0 %}
 
                 <p>
-                    <strong>Prix :</strong>
-                    {{ produit.prix }} €
+                    <strong>Quantité disponible :</strong>
+                    {{ produit.quantite }}
                 </p>
 
-                {% if produit.disponible and produit.quantite > 0 %}
+                <p>✅ Produit disponible</p>
 
-                    <p>
-                        <strong>Quantité disponible :</strong>
-                        {{ produit.quantite }}
-                    </p>
-
-                    <p>✅ Produit disponible</p>
-
-                    <a href="{{ path('panier_ajouter', {id: produit.id}) }}">
-                        🛒 Ajouter au panier
-                    </a>
-
-                {% else %}
-
-                    <p>🔄 Réapprovisionnement en cours</p>
-
-                {% endif %}
-
-                <br><br>
-
-                <a href="{{ path('admin_produit_modifier', {id: produit.id}) }}">
-                    ✏️ Modifier
+                <a href="{{ path('panier_ajouter', {id: produit.id}) }}">
+                    🛒 Ajouter au panier
                 </a>
 
-                <br><br>
+            {% else %}
 
-                <a href="{{ path('admin_produit_supprimer', {id: produit.id}) }}">
-                    🗑️ Retirer du catalogue
-                </a>
+                <p>🔄 Réapprovisionnement en cours</p>
 
-            </div>
+            {% endif %}
 
-            <hr>
+            <br><br>
 
-        {% endfor %}
+            <a href="{{ path('admin_produit_modifier', {id: produit.id}) }}">
+                ✏️ Modifier
+            </a>
 
-    {% endif %}
+            <br><br>
+
+            <a href="{{ path('admin_produit_supprimer', {id: produit.id}) }}">
+                🗑️ Retirer du catalogue
+            </a>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% endif %}
 
 {% endblock %}

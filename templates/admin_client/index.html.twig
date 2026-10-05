@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des clients{% endblock %}
+
+{% block body %}
+
+<h1>Gestion des clients</h1>
+
+{% if clients is empty %}
+
+    <p>Aucun client enregistré.</p>
+
+{% else %}
+
+    {% for client in clients %}
+
+        <div>
+            <p>
+                <strong>Nom :</strong>
+                {{ client.nom }}
+            </p>
+
+            <p>
+                <strong>Prénom :</strong>
+                {{ client.prenom }}
+            </p>
+
+            <p>
+                <strong>Email :</strong>
+                {{ client.email }}
+            </p>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% endif %}
+
+<a href="{{ path('app_produit') }}">
+    ← Retour au catalogue
+</a>
+
+{% endblock %}

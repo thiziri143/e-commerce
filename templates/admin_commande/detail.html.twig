@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la commande{% endblock %}
+
+{% block body %}
+
+<h1>Détail de la commande #{{ commande.id }}</h1>
+
+<h2>Informations du client</h2>
+
+<p>
+    <strong>Nom :</strong>
+    {{ commande.client.nom }}
+</p>
+
+<p>
+    <strong>Prénom :</strong>
+    {{ commande.client.prenom }}
+</p>
+
+<p>
+    <strong>Email :</strong>
+    {{ commande.client.email }}
+</p>
+
+<h2>Produits commandés</h2>
+
+{% for ligne in commande.ligneCommandes %}
+
+    <div>
+        <p>
+            <strong>Produit :</strong>
+            {{ ligne.produit.designation }}
+        </p>
+
+        <p>
+            <strong>Prix unitaire :</strong>
+            {{ ligne.prix }} €
+        </p>
+
+        <p>
+            <strong>Quantité :</strong>
+            {{ ligne.quantite }}
+        </p>
+
+        <p>
+            <strong>Sous-total :</strong>
+            {{ ligne.prix * ligne.quantite }} €
+        </p>
+
+        <hr>
+    </div>
+
+{% endfor %}
+
+<h2>
+    Total : {{ commande.montantTotal }} €
+</h2>
+
+<p>
+    <strong>Statut :</strong>
+
+    {% if commande.livree %}
+        ✅ Livrée
+    {% else %}
+        ⏳ En attente
+
+        <br><br>
+
+        <a href="{{ path('admin_commande_livrer', {id: commande.id}) }}">
+            📦 Marquer comme livrée
+        </a>
+    {% endif %}
+</p>
+
+<br>
+
+<a href="{{ path('admin_commandes') }}">
+    ← Retour aux commandes
+</a>
+
+{% endblock %}
