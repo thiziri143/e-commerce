@@ -5,6 +5,25 @@
 {% block body %}
 
 <h1>Catalogue des produits</h1>
+<h3>Trier les produits</h3>
+
+<p>
+    <a href="{{ path('app_produit', {tri: 'prix_asc'}) }}">
+        💰 Prix croissant
+    </a>
+    |
+    <a href="{{ path('app_produit', {tri: 'prix_desc'}) }}">
+        💰 Prix décroissant
+    </a>
+    |
+    <a href="{{ path('app_produit', {tri: 'designation'}) }}">
+        🔤 Désignation
+    </a>
+    |
+    <a href="{{ path('app_produit', {tri: 'disponibilite'}) }}">
+        📦 Disponibilité
+    </a>
+</p>
 
 {% if produits is empty %}
 

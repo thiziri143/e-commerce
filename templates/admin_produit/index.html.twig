@@ -1,20 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminProduitController!{% endblock %}
+{% block title %}Gestion des produits{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<h1>Gestion des produits</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/DELL/e-commerce_projet/src/Controller/AdminProduitController.php</code></li>
-        <li>Your template at <code>C:/Users/DELL/e-commerce_projet/templates/admin_produit/index.html.twig</code></li>
-    </ul>
-</div>
+<p>
+    <a href="{{ path('admin_produit_ajouter') }}">
+        ➕ Ajouter un produit
+    </a>
+</p>
+
+{% if produits is empty %}
+
+    <p>Aucun produit enregistré.</p>
+
+{% else %}
+
+    {% for produit in produits %}
+
+        <div>
+            <h2>{{ produit.designation }}</h2>
+
+            <p>
+                <strong>Description :</strong>
+                {{ produit.description }}
+            </p>
+
+            <p>
+                <strong>Prix :</strong>
+                {{ produit.prix }} €
+            </p>
+
+            <p>
+                <strong>Quantité :</strong>
+                {{ produit.quantite }}
+            </p>
+
+            <p>
+                <strong>Disponibilité :</strong>
+
+                {% if produit.disponible and produit.quantite > 0 %}
+                    ✅ Disponible
+                {% else %}
+                    ❌ Indisponible
+                {% endif %}
+            </p>
+
+            <a href="{{ path('admin_produit_modifier', {id: produit.id}) }}">
+                ✏️ Modifier
+            </a>
+
+            <br><br>
+
+            <a href="{{ path('admin_produit_supprimer', {id: produit.id}) }}">
+                🗑️ Retirer du catalogue
+            </a>
+
+        </div>
+
+        <hr>
+
+    {% endfor %}
+
+{% endif %}
+
 {% endblock %}

@@ -12,6 +12,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminProduitController extends AbstractController
 {
+    #[Route('/admin/produits', name: 'admin_produits')]
+    public function index(
+        EntityManagerInterface $entityManager
+    ): Response {
+        $produits = $entityManager
+            ->getRepository(Produit::class)
+            ->findAll();
+
+        return $this->render('admin_produit/index.html.twig', [
+            'produits' => $produits,
+        ]);
+    }
+
     #[Route('/admin/produit/ajouter', name: 'admin_produit_ajouter')]
     public function ajouter(
         Request $request,
@@ -26,7 +39,7 @@ final class AdminProduitController extends AbstractController
             $entityManager->persist($produit);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit');
+            return $this->redirectToRoute('admin_produits');
         }
 
         return $this->render('admin_produit/ajouter.html.twig', [
@@ -46,7 +59,7 @@ final class AdminProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_produit');
+            return $this->redirectToRoute('admin_produits');
         }
 
         return $this->render('admin_produit/modifier.html.twig', [
@@ -64,6 +77,6 @@ final class AdminProduitController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_produit');
+        return $this->redirectToRoute('admin_produits');
     }
 }
