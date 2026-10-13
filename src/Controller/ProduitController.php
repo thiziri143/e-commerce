@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,8 @@ final class ProduitController extends AbstractController
     #[Route('/produit', name: 'app_produit')]
     public function index(
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator
     ): Response {
         $tri = $request->query->get('tri', 'designation');
 
@@ -31,12 +33,17 @@ final class ProduitController extends AbstractController
 
         [$champ, $ordre] = $ordresAutorises[$tri];
 
-        $produits = $entityManager
+        $query = $entityManager
             ->getRepository(Produit::class)
-            ->findBy(
-                [],
-                [$champ => $ordre]
-            );
+            ->createQueryBuilder('p')
+            ->orderBy('p.' . $champ, $ordre)
+            ->getQuery();
+
+        $produits = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
 
         return $this->render('produit/index.html.twig', [
             'produits' => $produits,
