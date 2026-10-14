@@ -67,9 +67,20 @@
 
         <br><br>
 
-        <a href="{{ path('admin_commande_livrer', {id: commande.id}) }}">
-            📦 Marquer comme livrée
-        </a>
+       <form method="post"
+      action="{{ path('admin_commande_livrer', {id: commande.id}) }}">
+
+    <input
+        type="hidden"
+        name="_token"
+        value="{{ csrf_token('livrer_commande_' ~ commande.id) }}"
+    >
+
+    <button type="submit">
+        📦 Marquer comme livrée
+    </button>
+
+</form>
     {% endif %}
 </p>
 

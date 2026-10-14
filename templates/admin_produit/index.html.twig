@@ -54,9 +54,20 @@
 
             <br><br>
 
-            <a href="{{ path('admin_produit_supprimer', {id: produit.id}) }}">
-                🗑️ Retirer du catalogue
-            </a>
+            <form method="post"
+                  action="{{ path('admin_produit_supprimer', {id: produit.id}) }}"style="display:inline;">
+
+                <input
+                    type="hidden"
+                    name="_token"
+                    value="{{ csrf_token('supprimer_produit_' ~ produit.id) }}"
+                >
+
+                <button type="submit">
+                    🗑️ Retirer du catalogue
+                </button>
+
+            </form>
 
         </div>
 

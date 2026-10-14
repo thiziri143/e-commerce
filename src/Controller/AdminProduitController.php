@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,11 +68,27 @@ final class AdminProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/produit/{id}/supprimer', name: 'admin_produit_supprimer')]
+    #[Route(
+        '/admin/produit/{id}/supprimer',
+        name: 'admin_produit_supprimer',
+        methods: ['POST']
+    )]
     public function supprimer(
         Produit $produit,
+        Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        if (!$this->isCsrfTokenValid(
+            'supprimer_produit_' . $produit->getId(),
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException(
+                'Token CSRF invalide.'
+            );
+        }
+
+        // On ne supprime pas le produit de la base.
+        // On le retire simplement du catalogue.
         $produit->setDisponible(false);
 
         $entityManager->flush();

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Commande;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -34,11 +35,25 @@ final class AdminCommandeController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/commande/{id}/livrer', name: 'admin_commande_livrer')]
+    #[Route(
+        '/admin/commande/{id}/livrer',
+        name: 'admin_commande_livrer',
+        methods: ['POST']
+    )]
     public function livrer(
         Commande $commande,
+        Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        if (!$this->isCsrfTokenValid(
+            'livrer_commande_' . $commande->getId(),
+            $request->request->get('_token')
+        )) {
+            throw $this->createAccessDeniedException(
+                'Token CSRF invalide.'
+            );
+        }
+
         $commande->setLivree(true);
 
         $entityManager->flush();
